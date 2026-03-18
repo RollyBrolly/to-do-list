@@ -1,0 +1,26 @@
+{
+  "name": "to-do-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^40.6.0"
+  },
+  "build": {
+  "appId": "com.todolist.app",
+  "productName": "To Do List",
+  "directories": {
+    "output": "dist"
+  },
+  "win": {
+    "icon": "pixel-heart-pixelart-png256.ico"
+  }
+}}
