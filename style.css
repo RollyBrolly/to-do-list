@@ -27,12 +27,28 @@ body {
 }
 .card {
     width: 100%;
+    height: 300px;
     max-width: 450px;
     background-color: rgb(225, 225, 225);
     border-radius: 30px;
     margin: 30px auto;
     padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
     transition: all 0.3s ease;
+}
+.taskContainer{
+    margin-top: 10px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+.taskContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.taskContainer::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
 }
 .row {
     padding-top: 20px;
