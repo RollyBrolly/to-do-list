@@ -13,25 +13,19 @@ const customConfirm = document.getElementById("customConfirm");
 const confirmMSG = document.getElementById("confirmMSG");
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
-const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+const editModal = document.getElementById("editModal");
+const editInput = document.getElementById("editInput");
+const saveEditBtn = document.getElementById("saveEditBtn");
+const cancelEditBtn = document.getElementById("cancelEditBtn");
 
-checkboxes.forEach(checkbox => {
-    const saved = localStorage.getItem(checkbox.id);
-        if(saved =="true"){
-            checkbox.checked = true;
-        }
-        
-        //save state
-        checkbox.addEventListener('change', () => {
-            localStorage.setItem(checkbox.id, checkbox.checked);
-        });
-})
 
-function saveTasks(){
+function saveTasks() {
     const tasks = [];
 
     document.querySelectorAll(".task-item label").forEach(label => {
-        tasks.push(label.textContent);
+        tasks.push({
+            text: label.textContent
+        });
     });
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -55,6 +49,13 @@ function showConfirm(message, callback){
 function showAlert(message){
     alertMSG.textContent = message;
     customAlert.style.display = "flex";
+}
+
+//task counter
+function updateTaskCounter(){
+    const totalTasks = document.querySelectorAll(".task-item").length;
+    document.getElementById("taskCounter").textContent = 
+        `Tasks: ${totalTasks}`;
 }
 
 alertBtn.addEventListener("click", () => {
@@ -85,12 +86,14 @@ yellow.addEventListener('click', () => {
     };
     document.documentElement.style.setProperty('--checkbox-color', '#ffcc00');
     document.documentElement.style.setProperty('--primary-color', '#ffcc00');
-    document.documentElement.style.setProperty('--primary-hover', 'rgb(213, 143, 3)');  
+    document.documentElement.style.setProperty('--primary-hover', 'rgb(213, 143, 3)');
+        document.documentElement.style.setProperty('--badge-color', 'rgb(213, 143, 3)');
 
     localStorage.setItem("theme", "yellow");
 });
 
 purple.addEventListener('click', () => {
+    document.documentElement.style.setProperty('--badge-color', 'blueviolet');
     card.style.backgroundColor = "rgb(225, 225, 225)";
     addBtn.style.backgroundColor = "rgb(169, 78, 255)";
     bg.style.backgroundColor = "rgb(176, 176, 176)";
@@ -125,14 +128,7 @@ inputBox.addEventListener("keydown", function(event){
         }
     });
 
-
-addBtn.addEventListener('click', function () {
-    const taskText = inputBox.value.trim();
-    if (taskText === "") {
-        showAlert("Write something first love :D");
-        return;
-    }
-
+function createTask(taskText){
     const taskRow = document.createElement("div");
     taskRow.classList.add("task-item");
 
@@ -142,60 +138,92 @@ addBtn.addEventListener('click', function () {
     const label = document.createElement("label");
     label.textContent = taskText;
 
-    taskRow.appendChild(checkbox);
-    taskRow.appendChild(label);
-    taskContainer.appendChild(taskRow);
-    inputBox.value = "";
+    const editBtn = document.createElement("button");
+    editBtn.innerHTML = '<i class="fa-solid fa-pen"></i>';
+    editBtn.classList.add("editBtn");
 
-    saveTasks();
+    editBtn.addEventListener("click", () => {
+        showEditModal(label.textContent, (newText) => {
+            if (newText !== "") {
+                label.textContent = newText;
+                saveTasks();
+            }
+        });
 
-checkbox.addEventListener("change", function () {
-    if (checkbox.checked) {
-        setTimeout(() => {
-            showConfirm("Are you done with this task?", (answer) =>{
-                  if (answer) {
+    });
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+    deleteBtn.classList.add("deleteBtn");
+
+    deleteBtn.addEventListener("click", () =>{
+        showConfirm("Delete this task?", (answer) => {
+            if (answer){
                 taskRow.remove();
                 saveTasks();
+                updateTaskCounter();
+            }
+        });
+    });
+
+    taskRow.appendChild(checkbox);
+    taskRow.appendChild(label);
+    taskRow.appendChild(editBtn);
+    taskRow.appendChild(deleteBtn);
+    taskContainer.appendChild(taskRow);
+
+    checkbox.addEventListener("change", () => {
+        showConfirm("Are you done with this task?", (answer) => {
+            if (answer){
+                taskRow.remove();
+                saveTasks();
+                updateTaskCounter();
             } else {
                 checkbox.checked = false;
             }
-            });
-        }, 200); 
-    }
-});
-
-
-});
-function loadTasks(){
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-    tasks.forEach(taskText => {
-        const taskRow = document.createElement("div");
-        taskRow.classList.add("task-item");
-
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-
-        const label = document.createElement("label");
-        label.textContent = taskText;
-
-        taskRow.appendChild(checkbox);
-        taskRow.appendChild(label);
-        taskContainer.appendChild(taskRow);
-
-        checkbox.addEventListener("change", function (e) {
-            e.preventDefault();
-            showConfirm("Are you done with this task?", (answer) => {
-                if (answer) {
-                    taskRow.remove();
-                    saveTasks();
-                }
-            });
         });
     });
+    updateTaskCounter();
+    
+}
+addBtn.addEventListener('click', function () {
+    const taskText = inputBox.value.trim();
+
+    if (taskText === ""){
+        showAlert("Write something first love :D");
+        return
+    }
+
+    createTask(taskText);
+    saveTasks();
+    inputBox.value = "";
+});
+
+function showEditModal(currentText, callback) {
+    editInput.value = currentText;
+    editModal.style.display = "flex";
+
+    saveEditBtn.onclick = () => {
+        editModal.style.display = "none";
+        callback(editInput.value.trim());
+    };
+
+    cancelEditBtn.onclick = () => {
+        editModal.style.display = "none";
+    };
+}
+
+
+function loadTasks() {
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    tasks.forEach(task => {
+        createTask(task.text);
+    });
+
+    updateTaskCounter();
 }
 loadTasks();
-
 function loadTheme(){
     const savedTheme = localStorage.getItem("theme");
 

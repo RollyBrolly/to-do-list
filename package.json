@@ -12,15 +12,16 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "electron": "^40.6.0"
+    "electron": "^40.10.2"
   },
   "build": {
-  "appId": "com.todolist.app",
-  "productName": "To Do List",
-  "directories": {
-    "output": "dist"
-  },
-  "win": {
-    "icon": "pixel-heart-pixelart-png256.ico"
+    "appId": "com.todolist.app",
+    "productName": "To Do List",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "icon": "pixel-heart-pixelart-png256.ico"
+    }
   }
-}}
+}

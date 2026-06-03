@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-do List</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
+<p id="taskCounter">Tasks: 0</p>
 <div id="customAlert" class="customAlert">
     <div class="alertBox">
         <p id="alertMSG"></p>
@@ -18,6 +20,22 @@
         <div class="confirmBtn">
             <button id="yesBtn">YES</button>
             <button id="noBtn">NO</button>
+        </div>
+    </div>
+</div>
+<div id="editModal" class="customConfirm">
+    <div class="alertBox">
+        <p>Edit Task</p>
+
+        <input
+            type="text"
+            id="editInput"
+            class="editInput"
+        >
+
+        <div class="confirmBtn">
+            <button id="saveEditBtn">SAVE</button>
+            <button id="cancelEditBtn">CANCEL</button>
         </div>
     </div>
 </div>
