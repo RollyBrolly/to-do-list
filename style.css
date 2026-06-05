@@ -1,25 +1,31 @@
 :root {
-    --card-bg: #fff;
-    --body-bg: #f0f0f0;
-    --btn-bg: #ccc;
-    --btn-hover: #999;
+    --card-bg: rgb(225, 225, 225);
+    --body-bg: rgb(176, 176, 176);
+    --btn-bg: rgb(156, 156, 156);
+    --btn-hover: rgb(55, 55, 55);
     --input-border-hover: #666;
     --checkbox-color: #000;
     --primary-color: rgb(164, 164, 164);
     --primary-hover: rgb(94, 94, 94);
     --alert-bg: white;
-    --alert-button-bg: var(var(--primary-color));
     --badge-color: rgb(164, 164, 164);
+    --add-btn-bg: rgb(156, 156, 156);
+    --add-btn-hover: rgb(55, 55, 55);
+    --search-glow: rgb(129 140 248 / 30%);
 }
 
 * {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
+
 body {
-    background: rgb(176, 176, 176);
+    background: var(--body-bg);
+    transition: background-color 0.3s ease;
 }
+
 .container {
     width: 100%;
     min-height: 80vh;
@@ -27,210 +33,212 @@ body {
     justify-content: center;
     display: flex;
 }
+
 .card {
     width: 100%;
-    height: 300px;
-    max-width: 450px;
-    background-color: rgb(225, 225, 225);
+    height: 360px;
+    max-width: 480px;
+    background-color: var(--card-bg);
     border-radius: 30px;
     margin: 30px auto;
-    padding: 40px 30px;
+    padding: 40px 30px 30px;
     display: flex;
     flex-direction: column;
     transition: all 0.3s ease;
 }
-.taskContainer{
-    margin-top: 10px;
-    overflow-y: auto;
-    flex-grow: 1;
-}
-.taskContainer::-webkit-scrollbar {
-    width: 8px;
-}
 
-.taskContainer::-webkit-scrollbar-thumb {
-    background: var(--primary-color);
-    border-radius: 10px;
-}
+/* ── Search row ── */
 .row {
     padding-top: 20px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
-.addBtn {
-    height: 40px;
-    font-weight: bold;
-    border: none;
-    padding: 8px 19px;
-    background-color: rgb(156, 156, 156);
-    cursor: pointer;
-    border-radius: 10px;
-}
-.addBtn:hover {
-    color: #fff;
-    background-color: rgb(55, 55, 55);
-    transition: 0.3s;
-}
-.inputBox {
+
+.searchWrapper {
+    position: relative;
     flex-grow: 1;
-    width: 100px;
+    min-width: 0;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 14px;
+    pointer-events: none;
+    transition: color 0.3s;
+}
+
+.inputBox {
+    width: 100%;
     height: 40px;
     outline: none;
     border: 2px solid transparent;
     border-radius: 10px;
     transition: 0.3s ease;
-    padding: 0 10px;
+    padding: 0 10px 0 34px;
+    background-color: #f5f5f5;
+    font-size: 14px;
 }
-.inputBox:hover {
+
+.inputBox:hover,
+.inputBox:focus {
     outline: none;
-    border-color: rgb(0, 0, 0);
+    border-color: var(--primary-color);
     background-color: #fff;
-    box-shadow: 0 0 0 5px rgb(129 140 248 / 30%);
+    box-shadow: 0 0 0 5px var(--search-glow);
 }
+
+.searchBtn {
+    height: 40px;
+    width: 40px;
+    font-weight: bold;
+    border: none;
+    background-color: var(--add-btn-bg);
+    cursor: pointer;
+    border-radius: 10px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    flex-shrink: 0;
+}
+
+.searchBtn:hover {
+    background-color: var(--add-btn-hover);
+}
+
+.addBtn {
+    height: 40px;
+    font-weight: bold;
+    border: none;
+    padding: 8px 14px;
+    background-color: var(--add-btn-bg);
+    cursor: pointer;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    color: #fff;
+    transition: 0.3s;
+    flex-shrink: 0;
+}
+
+.addBtn:hover {
+    background-color: var(--add-btn-hover);
+}
+
+/* ── Task list ── */
+.taskContainer {
+    margin-top: 12px;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+.taskContainer::-webkit-scrollbar { width: 6px; }
+.taskContainer::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
 .task-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding-top: 15px;
+    gap: 8px;
+    padding: 10px 4px;
     font-weight: bold;
-    font-size: 25px;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    transition: background 0.2s;
+    border-radius: 8px;
 }
-.task-item label{
+
+.task-item:last-child { border-bottom: none; }
+
+.task-item label {
     flex: 1;
     min-width: 0;
     word-break: break-word;
+    cursor: default;
 }
+
+.task-item .task-meta {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.task-item .task-meta .task-name {
+    font-size: 15px;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+.task-item .task-meta .task-sub {
+    font-size: 11px;
+    font-weight: 400;
+    color: #888;
+    margin-top: 2px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
 .task-item input[type="checkbox"] {
     appearance: none;
     -webkit-appearance: none;
     cursor: pointer;
-    width: 30px;
-    height: 30px;
-    min-width: 25px;
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
     border: 3px solid var(--checkbox-color);
-    border-radius: 10px;
+    border-radius: 8px;
     position: relative;
     background-color: #fff;
     transition: background-color 0.2s ease;
 }
+
 .task-item input[type="checkbox"]:checked {
     background-color: var(--checkbox-color);
     border-color: var(--checkbox-color);
 }
-.task-item input[type="checkbox"]:active {
-    transform: scale(0.9);
-}
+
+.task-item input[type="checkbox"]:active { transform: scale(0.9); }
+
 .task-item input[type="checkbox"]:checked::after {
     content: "✔";
     color: white;
-    font-size: 23px;
+    font-size: 16px;
     position: absolute;
-    top: -18%;
-    left: 10%;
-}
-.colorPalette {
-    display: flex;
-    align-items: end;
-    justify-content: right;
-    padding: 15px 30px;
-    gap: 10px;
-}
-.purple {
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    transition: 0.3s;
-}
-.purple:hover {
-    transform: translateY(-7px);
-}
-.yellow {
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    transition: 0.3s;
-}
-.yellow:hover {
-    transform: translateY(-7px);
-}
-.customAlert {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.3);
-    display: none;
-    justify-content: center;
-    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.alertBox {
-    background: var(--alert-bg);
-    padding: 20px 30px;
-    border-radius: 12px;
-    text-align: center;
-    min-width: 250px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+/* ── Priority inline badge ── */
+.priorityDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
 }
+.priorityDot.low    { background: #4caf50; }
+.priorityDot.medium { background: #ff9800; }
+.priorityDot.high   { background: #f44336; }
 
-.alertBox p {
-    margin-bottom: 15px;
-}
-
-.alertBox button {
-    background: var(--primary-color);
-    font-weight: bold;
-    padding: 6px 15px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s ease;
-}
-
-.alertBox button:hover{
-    background: var(--primary-hover);
-    color: #f0f0f0;
-}
-.customConfirm{
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.3);
-    display: none;
-    justify-content: center;
-    align-items: center; 
-}
-.confirmBtn{
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-.confirmBtn button{
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 6px 15px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-#taskCounter {
-    margin: 10px auto 0;
-    text-align: center;
-    width: fit-content;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background-color: var(--badge-color);
-    color: white;
-    font-size: 14px;
-    font-weight: bold;
-    transition: all 0.3s ease;
-}
-
-
+/* ── Action buttons ── */
 .editBtn,
-.deleteBtn {
-    width: 40px;
-    height: 40px;
+.deleteBtn,
+.viewBtn {
+    width: 34px;
+    height: 34px;
     border: none;
     background: transparent;
     cursor: pointer;
@@ -239,23 +247,270 @@ body {
     align-items: center;
     justify-content: center;
     transition: 0.25s ease;
-}
-.editBtn i,
-.deleteBtn i {
-    font-size: 22px;
-}
-.editBtn {
-    color: var(--primary-color);
-}
-.editBtn:hover {
-    background: var(--primary-color);
-    color: white;
-}
-.deleteBtn {
-    color: #dc3545;
+    flex-shrink: 0;
 }
 
-.deleteBtn:hover {
-    background: #dc3545;
+.editBtn i, .deleteBtn i, .viewBtn i { font-size: 20px; }
+
+.viewBtn  { color: var(--primary-color); }
+.viewBtn:hover { background: var(--primary-color); color: white; }
+
+.editBtn  { color: var(--primary-color); }
+.editBtn:hover { background: var(--primary-color); color: white; }
+
+.deleteBtn { color: #dc3545; }
+.deleteBtn:hover { background: #dc3545; color: white; }
+
+/* ── Task counter badge ── */
+#taskCounter {
+    margin: 5px auto 0;
+    text-align: center;
+    width: fit-content;
+    padding: 5px 14px;
+    border-radius: 20px;
+    background-color: var(--badge-color);
     color: white;
+    font-size: 13px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+/* ── Color palette ── */
+.colorPalette {
+    display: flex;
+    align-items: end;
+    justify-content: right;
+    padding: 15px 30px;
+    gap: 10px;
+}
+
+.purple, .yellow {
+    cursor: pointer;
+    width: 46px;
+    height: 46px;
+    object-fit: cover;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+.purple:hover, .yellow:hover { transform: translateY(-7px); }
+
+/* ── Modals (shared overlay) ── */
+.customAlert,
+.customConfirm {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.alertBox {
+    background: var(--alert-bg);
+    padding: 24px 28px;
+    border-radius: 16px;
+    text-align: center;
+    min-width: 260px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+.alertBox p { margin-bottom: 15px; }
+
+.modal-title {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 18px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #333;
+}
+
+.modal-title i { color: var(--primary-color); }
+
+.confirmBtn {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.confirmBtn button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.25s ease;
+}
+
+.confirmBtn button:hover {
+    background: var(--primary-hover);
+}
+
+/* ── Add Task Modal ── */
+.addModalBox {
+    min-width: 320px;
+    max-width: 420px;
+    text-align: left;
+}
+
+.formGroup {
+    margin-bottom: 14px;
+}
+
+.formLabel {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: #666;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.formLabel i { color: var(--primary-color); margin-right: 4px; }
+
+.editInput {
+    width: 100%;
+    padding: 9px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.25s ease;
+    background: #fafafa;
+    margin-top: 4px;
+}
+
+.editInput:focus {
+    border-color: var(--primary-color);
+    background: #fff;
+    box-shadow: 0 0 0 4px var(--search-glow);
+}
+
+/* ── Priority radio group ── */
+.priorityGroup {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.priorityOption {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.priorityOption input[type="radio"] { display: none; }
+
+.priorityBadge {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 2px solid transparent;
+    transition: 0.2s;
+    cursor: pointer;
+    user-select: none;
+}
+
+.priorityBadge.low    { background: #e8f5e9; color: #388e3c; border-color: #c8e6c9; }
+.priorityBadge.medium { background: #fff3e0; color: #f57c00; border-color: #ffe0b2; }
+.priorityBadge.high   { background: #ffebee; color: #c62828; border-color: #ffcdd2; }
+
+.priorityOption input[type="radio"]:checked + .priorityBadge.low    { background: #4caf50; color: #fff; border-color: #388e3c; }
+.priorityOption input[type="radio"]:checked + .priorityBadge.medium { background: #ff9800; color: #fff; border-color: #f57c00; }
+.priorityOption input[type="radio"]:checked + .priorityBadge.high   { background: #f44336; color: #fff; border-color: #c62828; }
+
+/* ── View Modal ── */
+.viewModalBox {
+    min-width: 300px;
+    max-width: 380px;
+    text-align: left;
+}
+
+.viewDetail {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.viewDetail:last-of-type { border-bottom: none; }
+
+.viewLabel {
+    font-size: 12px;
+    font-weight: 700;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    min-width: 80px;
+    padding-top: 1px;
+}
+
+.viewLabel i { color: var(--primary-color); margin-right: 4px; }
+
+.viewValue {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    flex: 1;
+    word-break: break-word;
+}
+
+.viewPriorityBadge {
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.viewPriorityBadge.low    { background: #e8f5e9; color: #388e3c; }
+.viewPriorityBadge.medium { background: #fff3e0; color: #f57c00; }
+.viewPriorityBadge.high   { background: #ffebee; color: #c62828; }
+
+/* ── No results message ── */
+.noResults {
+    text-align: center;
+    color: #aaa;
+    font-size: 14px;
+    padding: 20px 0;
+    display: none;
+}
+/* ── Deadline badges ── */
+.deadlineBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    vertical-align: middle;
+    background: #fff3e0;
+    color: #e65100;
+    border: 1px solid #ffcc80;
+}
+
+.deadlineBadge.deadlineToday {
+    background: #fff8e1;
+    color: #f57f17;
+    border-color: #ffe082;
+}
+
+.deadlineBadge.deadlineOverdue {
+    background: #ffebee;
+    color: #b71c1c;
+    border-color: #ef9a9a;
 }

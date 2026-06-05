@@ -8,12 +8,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <p id="taskCounter">Tasks: 0</p>
+
+<!-- Alert Modal -->
 <div id="customAlert" class="customAlert">
-    <div class="alertBox">
+    <div class="alertBox alertWarning">
+        <i class="fa-solid fa-triangle-exclamation alertIcon"></i>
         <p id="alertMSG"></p>
-        <button id="alertBtn">OK</button>
+        <div class="confirmBtn">
+            <button id="alertBtn"><i class="fa-solid fa-check"></i> OK</button>
+        </div>
     </div>
 </div>
+
+<!-- Confirm Modal -->
 <div id="customConfirm" class="customConfirm">
     <div class="alertBox">
         <p id="confirmMSG"></p>
@@ -23,22 +30,123 @@
         </div>
     </div>
 </div>
-<div id="editModal" class="customConfirm">
-    <div class="alertBox">
-        <p>Edit Task</p>
 
-        <input
-            type="text"
-            id="editInput"
-            class="editInput"
-        >
+<!-- Edit Modal -->
+<div id="editModal" class="customConfirm">
+     <div class="alertBox addModalBox">
+        <p class="modal-title"><i class="fa-solid fa-plus"></i> New Task</p>
+
+        <div class="formGroup">
+            <label class="formLabel"><i class="fa-solid fa-clipboard"></i> Task Name</label>
+            <input type="text" id="editInput" class="editInput" placeholder="What needs to be done?">
+        </div>
+
+        <div class="formGroup">
+            <label class="formLabel"><i class="fa-solid fa-tag"></i> Category</label>
+            <input type="text" id="editCategory" class="editInput" placeholder="e.g. Work, Personal, School...">
+        </div>
+
+        <div class="formGroup">
+            <label class="formLabel"><i class="fa-solid fa-calendar-days"></i> Due Date</label>
+            <input type="date" id="editDueDate" class="editInput">
+        </div>
+
+        <div class="formGroup">
+            <label class="formLabel"><i class="fa-solid fa-flag"></i> Priority</label>
+            <div class="priorityGroup">
+                <label class="priorityOption">
+                    <input type="radio" name="priority" value="low">
+                    <span class="priorityBadge low">Low</span>
+                </label>
+                <label class="priorityOption">
+                    <input type="radio" name="priority" value="medium" checked>
+                    <span class="priorityBadge medium">Medium</span>
+                </label>
+                <label class="priorityOption">
+                    <input type="radio" name="priority" value="high">
+                    <span class="priorityBadge high">High</span>
+                </label>
+            </div>
+        </div>
 
         <div class="confirmBtn">
-            <button id="saveEditBtn">SAVE</button>
-            <button id="cancelEditBtn">CANCEL</button>
+            <button id="saveEditBtn"><i class="fa-solid fa-plus"></i> ADD TASK</button>
+            <button id="cancelEditBtn"><i class="fa-solid fa-xmark"></i> CANCEL</button>
         </div>
     </div>
 </div>
+
+<!-- Add Task Modal -->
+<div id="addModal" class="customConfirm">
+    <div class="alertBox addModalBox">
+        <p class="modal-title"><i class="fa-solid fa-plus"></i> New Task</p>
+
+        <div class="formGroup">
+            <label class="formLabel"><i class="fa-solid fa-clipboard"></i> Task Name</label>
+            <input type="text" id="newTaskName" class="editInput" placeholder="What needs to be done?">
+        </div>
+
+        <div class="formGroup">
+            <label class="formLabel"><i class="fa-solid fa-tag"></i> Category</label>
+            <input type="text" id="newTaskCategory" class="editInput" placeholder="e.g. Work, Personal, School...">
+        </div>
+
+        <div class="formGroup">
+            <label class="formLabel"><i class="fa-solid fa-calendar-days"></i> Due Date</label>
+            <input type="date" id="newTaskDueDate" class="editInput">
+        </div>
+
+        <div class="formGroup">
+            <label class="formLabel"><i class="fa-solid fa-flag"></i> Priority</label>
+            <div class="priorityGroup">
+                <label class="priorityOption">
+                    <input type="radio" name="priority" value="low">
+                    <span class="priorityBadge low">Low</span>
+                </label>
+                <label class="priorityOption">
+                    <input type="radio" name="priority" value="medium" checked>
+                    <span class="priorityBadge medium">Medium</span>
+                </label>
+                <label class="priorityOption">
+                    <input type="radio" name="priority" value="high">
+                    <span class="priorityBadge high">High</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="confirmBtn">
+            <button id="saveAddBtn"><i class="fa-solid fa-plus"></i> ADD TASK</button>
+            <button id="cancelAddBtn"><i class="fa-solid fa-xmark"></i> CANCEL</button>
+        </div>
+    </div>
+</div>
+
+<!-- View Task Modal -->
+<div id="viewModal" class="customConfirm">
+    <div class="alertBox viewModalBox">
+        <p class="modal-title"><i class="fa-solid fa-circle-info"></i> Task Details</p>
+        <div class="viewDetail">
+            <span class="viewLabel"><i class="fa-solid fa-clipboard"></i> Task</span>
+            <span id="viewTaskName" class="viewValue"></span>
+        </div>
+        <div class="viewDetail">
+            <span class="viewLabel"><i class="fa-solid fa-tag"></i> Category</span>
+            <span id="viewTaskCategory" class="viewValue"></span>
+        </div>
+        <div class="viewDetail">
+            <span class="viewLabel"><i class="fa-solid fa-calendar-days"></i> Due Date</span>
+            <span id="viewTaskDueDate" class="viewValue"></span>
+        </div>
+        <div class="viewDetail">
+            <span class="viewLabel"><i class="fa-solid fa-flag"></i> Priority</span>
+            <span id="viewTaskPriority" class="viewValue"></span>
+        </div>
+        <div class="confirmBtn" style="margin-top: 16px;">
+            <button id="closeViewBtn"><i class="fa-solid fa-xmark"></i> CLOSE</button>
+        </div>
+    </div>
+</div>
+
 <body>
     <div class="colorPalette">
         <img src="purplepalette.png" alt="purple" class="purple">
@@ -48,11 +156,14 @@
         <div class="card">
             <h1>To-Do List</h1>
             <div class="row">
-                <input type="text" placeholder="Add task" class="inputBox" id="inputBox">
-                <button class="addBtn" id="addBtn">ADD</button>
+                <div class="searchWrapper">
+                    <i class="fa-solid fa-magnifying-glass searchIcon"></i>
+                    <input type="text" placeholder="Search tasks..." class="inputBox" id="inputBox">
+                </div>
+                <button class="searchBtn" id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <button class="addBtn" id="addBtn"><i class="fa-solid fa-plus"></i> ADD</button>
             </div>
             <div id="taskContainer" class="taskContainer">
-
             </div>
         </div>
     </div>
