@@ -5,14 +5,17 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder",
+    "pack": "electron-builder --dir",
+    "dist:win": "electron-builder --win"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "electron": "^40.10.2"
+    "electron": "^40.10.3",
+    "electron-builder": "^24.0.0"
   },
   "build": {
     "appId": "com.todolist.app",
@@ -20,7 +23,11 @@
     "directories": {
       "output": "dist"
     },
+    "files": [
+      "**/*"
+    ],
     "win": {
+      "target": ["nsis"],
       "icon": "pixel-heart-pixelart-png256.ico"
     }
   }
